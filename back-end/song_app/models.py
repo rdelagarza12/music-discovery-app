@@ -7,7 +7,7 @@ class Genre(models.Model):
     genre_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return {self.genre_name}
+        return f"{self.genre_name}"
 
 
 
@@ -19,3 +19,4 @@ class Song(models.Model):
 
     def __str__(self):
         return f"Song: {self.song_name} | Artist: {self.artist} | Album: {self.album}"
+    
