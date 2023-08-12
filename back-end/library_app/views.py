@@ -44,6 +44,7 @@ class My_Library(User_permissions):
         My_Library = Library.objects.get(user=response.user.id)
         response.data["library"] = My_Library
         new_playlist = Playlist(**response.data)
+        new_playlist.playlist_name = new_playlist.playlist_name.lower()
         new_playlist.save()
         return Response(PlaylistSerializer(new_playlist).data, status=HTTP_201_CREATED)
 

@@ -27,9 +27,9 @@ class Single_Playlist(User_permissions):
                 return single_playlist
                 
             else:
-                segments = " ".join(playlist.strip("/").split("/")[-1].split("_"))
+                segments = " ".join(playlist.strip("/").split("/")[-1].split("_")).lower()
                 try:
-                    single_playlist = response.user.library.playlist.get(playlist_name=playlist)
+                    single_playlist = response.user.library.playlist.get(playlist_name=playlist.lower())
                 except:
                     single_playlist = response.user.library.playlist.get(playlist_name=segments)
                 return single_playlist
@@ -94,8 +94,7 @@ class Single_Playlist(User_permissions):
                     song_to_delete = single_playlist.playlist_song.get(song=get_song)
                 except:
                     songs_to_delete = single_playlist.playlist_song.filter(song=get_song)
-                    return Response(f"There is {len(songs_to_delete)} of this song. Please the Song ID instead", status=HTTP_400_BAD_REQUEST)
-
+                    return Response(f"There is {len(songs_to_delete)} of this song. Please input the Song ID instead", status=HTTP_400_BAD_REQUEST)
         except:
             return Response("This Song Does Not Exist", status=HTTP_404_NOT_FOUND)
         song_to_delete.delete()
@@ -109,7 +108,7 @@ class Single_Playlist(User_permissions):
         except Playlist.DoesNotExist:
             return Response(status=HTTP_404_NOT_FOUND)
 
-        playlist_name = response.data.get("playlist_name")
+        playlist_name = response.data.get("playlist_name").lower()
         max_songs = response.data.get("max_songs")
 
         if playlist_name is not None:
@@ -136,7 +135,7 @@ class Single_Playlist_Song(User_permissions):
                 return Song.objects.get(id=song_name)
             else:
                 segments = " ".join(song_name.strip("/").split("/")[-1].split("_"))
-                return Song.objects.get(song_name__iexact=song_name)  # Case-insensitive lookup
+                return Song.objects.get(song_name__iexact=segments)  # Case-insensitive lookup
         except Song.DoesNotExist:
             return None
         
@@ -147,9 +146,9 @@ class Single_Playlist_Song(User_permissions):
                 return single_playlist
                 
             else:
-                segments = " ".join(playlist.strip("/").split("/")[-1].split("_"))
+                segments = " ".join(playlist.strip("/").split("/")[-1].split("_")).lower()
                 try:
-                    single_playlist = response.user.library.playlist.get(playlist_name=playlist)
+                    single_playlist = response.user.library.playlist.get(playlist_name=playlist.lower())
                 except:
                     single_playlist = response.user.library.playlist.get(playlist_name=segments)
                 return single_playlist
@@ -164,6 +163,7 @@ class Single_Playlist_Song(User_permissions):
         
 
         single_song = self.get_song(playlistsong)
+        print(single_song)
         if single_song is None:
             return Response("This Song Does Not Exist", status=HTTP_404_NOT_FOUND)
         try:
