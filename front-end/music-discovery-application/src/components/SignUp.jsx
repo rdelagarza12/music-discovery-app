@@ -23,7 +23,7 @@ export default function SignUp() {
         api.defaults.headers.common['Authorization'] = `Token ${token}`;
         setUser(my_user)
         setLoggedIn(!loggedIn)
-        navigate("/signin/profile")
+        navigate("profile")
     }
 
     return (
