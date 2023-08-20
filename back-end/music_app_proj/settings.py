@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'library_app',
     'playlist_app',
     'song_app',
+    "spotify_app",
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
