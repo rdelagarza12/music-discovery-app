@@ -18,50 +18,49 @@ class User_permissions(APIView):
 
 class My_Library(User_permissions):
 
-    def grab_playlist(self, response, playlist):
+    def grab_playlist(self, request, playlist):
         try:
             if (type(playlist)) == int:
-                single_playlist = response.user.library.playlist.get(id=playlist)
+                single_playlist = request.user.library.playlist.get(id=playlist)
                 return single_playlist
                 
             else:
                 segments = " ".join(playlist.strip("/").split("/")[-1].split("_"))
                 try:
-                    single_playlist = response.user.library.playlist.get(playlist_name=playlist)
+                    single_playlist = request.user.library.playlist.get(playlist_name=playlist)
                 except:
-                    single_playlist = response.user.library.playlist.get(playlist_name=segments)
+                    single_playlist = request.user.library.playlist.get(playlist_name=segments)
                 return single_playlist
         except:
             return None
 
     # RETURNS ENTIRE LIBRARY
 
-    def get(self, response):
-        user = response.user.id
+    def get(self, request):
+        user = request.user.id
         my_library = Library.objects.get(user=user)
         serialized_library = LibrarySerializer(my_library).data
         return Response(serialized_library)
     
     def post(self, request):
         my_library = Library.objects.get(user=request.user)
-        playlist_name = request.data.get("playlist_name").lower()
-        if Playlist.objects.filter(library=my_library, playlist_name=playlist_name).exists():
-            return Response("Playlist name already exists in your library", status=HTTP_400_BAD_REQUEST)
-        new_playlist = Playlist(library=my_library, **request.data)
-        new_playlist.playlist_name = playlist_name
-        new_playlist.save()
-        return Response(PlaylistSerializer(new_playlist).data, status=HTTP_201_CREATED)
+        request.data['library'] = my_library
+        new_playlist, created = Playlist.objects.get_or_create(**request.data)
+        if created:
+            new_playlist.save()
+            return Response(PlaylistSerializer(new_playlist).data, status=HTTP_201_CREATED)
+        return Response(status = HTTP_400_BAD_REQUEST)
     
     
-    def delete(self, response):
+    def delete(self, request):
         try:
-            if type(response.data.get("playlist")) == int:
-                single_playlist = response.user.library.playlist.get(id=response.data.get("playlist"))
+            if type(request.data.get("playlist")) == int:
+                single_playlist = request.user.library.playlist.get(id=request.data.get("playlist"))
             else:
-                playlist_to_delete = response.data.get("playlist_name")
-                single_playlist = self.grab_playlist(response, playlist_to_delete)
+                playlist_to_delete = request.data.get("playlist_name")
+                single_playlist = self.grab_playlist(request, playlist_to_delete)
             if single_playlist is None:
-                return Response("Playlist is None", status=HTTP_404_NOT_FOUND)
+                return request("Playlist is None", status=HTTP_404_NOT_FOUND)
         except:
             return Response("Playlist does not exist", status = HTTP_404_NOT_FOUND)
         single_playlist.delete()

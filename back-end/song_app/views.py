@@ -7,15 +7,15 @@ from rest_framework import status
 
 class Single_Song(APIView):
 
-    def post(self, response):
-        if Song.objects.filter(spotify_song_id=response.data.get("spotify_song_id")).count() > 0:
+    def post(self, request):
+        if Song.objects.filter(spotify_song_id=request.data.get("spotify_song_id")).count() > 0:
             return Response(status = status.HTTP_400_BAD_REQUEST)
-        spotify_id = response.data.get("spotify_song_id")
-        name = response.data.get("song_name")
-        artist = response.data.get("artist")
-        album = response.data.get("album")
-        genre = response.data.get("genre")
-        image_cover = response.data.get("image_cover")
+        spotify_id = request.data.get("spotify_song_id")
+        name = request.data.get("song_name")
+        artist = request.data.get("artist")
+        album = request.data.get("album")
+        genre = request.data.get("genre")
+        image_cover = request.data.get("image_cover")
         try:
             for genre_type in genre:
                 if Genre.objects.filter(genre_name = genre_type) > 0:
