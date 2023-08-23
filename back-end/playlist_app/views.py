@@ -58,20 +58,17 @@ class Single_Playlist(User_permissions):
 
     def post(self , response, playlist):
         try:
-            if response.data.get("song").isdigit():
-                get_song = Song.objects.get(id=response.data.get("song"))
-            else:
-                get_song = self.get_song_by_name(response.data.get("song"))
-                if get_song is None:
-                    return Response(status=HTTP_404_NOT_FOUND)
-        except:
+            get_song = Song.objects.get(spotify_song_id=response.data.get("spotify_song_id"))
+            single_playlist = self.grab_playlist(response,playlist)
+            if single_playlist is None:
+                return Response("Playlist could not be found", HTTP_404_NOT_FOUND)
+            new_song = Playlist_Song(song=get_song, playlist=single_playlist)
+            new_song.save()
+            return Response(status=HTTP_201_CREATED)            
+        except Exception as error:
+            print(error)
             return Response("This song does not exist", status = HTTP_404_NOT_FOUND)
-        single_playlist = self.grab_playlist(response,playlist)
-        if single_playlist is None:
-            return Response(HTTP_404_NOT_FOUND)
-        new_song = Playlist_Song(song=get_song, playlist=single_playlist)
-        new_song.save()
-        return Response(status=HTTP_201_CREATED)
+
 
 
 #|-------------- DELETES A SONG FROM PLAYLIST
@@ -80,12 +77,12 @@ class Single_Playlist(User_permissions):
         single_playlist = self.grab_playlist(response,playlist)
         if single_playlist is None:
             return Response(HTTP_404_NOT_FOUND)
-        my_song = response.data.get("song")
+        my_song = response.data.get("spotify_song_id")
         
         try:
             try:
-                my_song = int(my_song)
-                song_to_delete = single_playlist.playlist_song.get(id=response.data.get("song"))
+                song_to_delete = single_playlist.playlist_song.get(spotify_song_id=response.data.get("song"))
+                
             except:
                 get_song = self.get_song_by_name(my_song)
                 if get_song is None:
@@ -129,13 +126,9 @@ class Single_Playlist(User_permissions):
 
 class Single_Playlist_Song(User_permissions):
 
-    def get_song(self, song_name):
+    def get_song(self, song):
         try:
-            if (type(song_name)) == int:
-                return Song.objects.get(id=song_name)
-            else:
-                segments = " ".join(song_name.strip("/").split("/")[-1].split("_"))
-                return Song.objects.get(song_name__iexact=segments)  # Case-insensitive lookup
+            return Song.objects.get(spotify_song_id=song)
         except Song.DoesNotExist:
             return None
         
@@ -163,7 +156,6 @@ class Single_Playlist_Song(User_permissions):
         
 
         single_song = self.get_song(playlistsong)
-        print(single_song)
         if single_song is None:
             return Response("This Song Does Not Exist", status=HTTP_404_NOT_FOUND)
         try:

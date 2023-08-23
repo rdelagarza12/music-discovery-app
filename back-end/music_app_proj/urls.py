@@ -23,5 +23,6 @@ urlpatterns = [
     path("api/libraries/", include("library_app.urls")),
     path("api/playlists/", include("playlist_app.urls")),
     path("api/playlistsongs/", include("song_app.urls")),
-    path("api/spotifyauthentication/", include("spotify_app.urls"))
+    path("api/spotifyauthentication/", include("spotify_app.urls")),
+    path("api/songs/", include("song_app.urls"))
 ]

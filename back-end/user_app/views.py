@@ -77,7 +77,7 @@ class Log_In(APIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({"user" : user.email, "token" : token.key}, status=HTTP_201_CREATED)
         else:
-            return Response(status=HTTP_404_NOT_FOUND)
+            return Response("Invalid Credentials", status=HTTP_404_NOT_FOUND)
 
 class Log_Out(APIView):
     authentication_classes = [TokenAuthentication]
