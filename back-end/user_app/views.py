@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED
 import requests
 from dotenv import load_dotenv
 import os
@@ -15,7 +15,6 @@ load_dotenv()
 
 client_id = os.environ.get('CLIENT_ID')
 client_secret = os.environ.get('CLIENT_SECRET')
-# Create your views here.
 
 class Master_Sign_Up(APIView):
 
@@ -39,33 +38,8 @@ class Sign_Up(APIView):
         user_library = Library(user=user)
         user_library.save()
         token = Token.objects.create(user=user)
-        client_id = os.environ.get('CLIENT_ID')
-        client_secret = os.environ.get('CLIENT_SECRET')
-
-        url = 'https://accounts.spotify.com/api/token'
-        data = {
-            'grant_type': 'client_credentials'
-        }
-        headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        auth = (client_id, client_secret)
-
-        response = requests.post(url, data=data, headers=headers, auth=auth)
-
-        if response.status_code == 200:
-            response_json = response.json()
-            request.user.spotify_token = response_json
-        else:
-            print('Error:', response.status_code)
-        return Response({"user" : user.email,
-                "user_token": token.key, 
-                "access_token" : response_json.get('access_token'),
-                "token_type" : response_json.get('token_type'),
-                "expires_in" : response_json.get("expires_in")},
-                status=HTTP_201_CREATED)
-
+        if token:
+            return Response({"email" : user.email, "token" : token.key}, status=HTTP_201_CREATED)
 
 
 class Log_In(APIView):
@@ -76,34 +50,10 @@ class Log_In(APIView):
         user = authenticate(username=email, password=password)
         if user:
             token, created = Token.objects.get_or_create(user=user)
-            client_id = os.environ.get('CLIENT_ID')
-            client_secret = os.environ.get('CLIENT_SECRET')
+            return Response({"user" : user.email, "token" : token.key}, status=HTTP_201_CREATED)
+        else:
+            return Response("Invalid Credentials", status=HTTP_404_NOT_FOUND)
 
-            url = 'https://accounts.spotify.com/api/token'
-            data = {
-                'grant_type': 'client_credentials'
-            }
-            headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-            auth = (client_id, client_secret)
-
-            response = requests.post(url, data=data, headers=headers, auth=auth)
-
-            if response.status_code == 200:
-                response_json = response.json()
-                user.spotify_token = response_json
-            else:
-                print('Error:', response.status_code)
-            return Response({"user" : user.email,
-                    "user_token": token.key, 
-                    "access_token" : response_json.get('access_token'),
-                    "token_type" : response_json.get('token_type'),
-                    "expires_in" : response_json.get("expires_in")},
-                    status=HTTP_201_CREATED)
-
-    
 class Log_Out(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

@@ -15,4 +15,21 @@ export const getLibrary = async (e) => {
     return user_library
 }
 
+export const getGenre = async (e) => {
+    try {
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'https://api.spotify.com/v1/recommendations/available-genre-seeds',
+            headers: { 
+                'Authorization': `Bearer ${localStorage.getItem('Bearer')}`
+            }
+        };
 
+        const response = await axios.request(config);
+        const availableGenres = response.data.genres;
+        return availableGenres
+    } catch (error) {
+        console.log(error);
+    }
+};

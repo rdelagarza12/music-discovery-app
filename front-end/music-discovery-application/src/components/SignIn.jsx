@@ -15,7 +15,6 @@ export default function SignIn() {
             email: userName,
             password: password
         })
-        console.log(response.data)
         let my_user = response.data.user;
         let token = response.data.user_token;
         let spotify_access_token = response.data.access_token
@@ -24,8 +23,9 @@ export default function SignIn() {
         api.defaults.headers.common['Authorization'] = `Token ${token}`;
         setUser(my_user)
         setLoggedIn(!loggedIn)
-        navigate("/signin/profile")
+        navigate("profile")
     }
+
 
     return (
         <div className="register">

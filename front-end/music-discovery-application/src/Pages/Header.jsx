@@ -35,7 +35,7 @@ export default function Header () {
                 </div>
                 <h1>Lucid Streaming</h1>
                 <div className="HeaderButtons">
-                    {!loggedIn ? (<Link to="signup"><button type="button" className="btn btn-primary">SIGN UP</button></Link>) : <Link to="/signin/profile"><button type="button" className="btn btn-primary">Profile</button></Link>}
+                    {!loggedIn ? (<Link to="signup"><button type="button" className="btn btn-primary">SIGN UP</button></Link>) : <Link to="signin/profile"><button type="button" className="btn btn-primary">Profile</button></Link>}
                     {!loggedIn ? <Link to="signin"><button type="button" className="btn btn-primary">LOG IN</button></Link> : <button type="button" className="btn btn-primary" onClick={logout}>LOG OUT</button>}
 
                 </div>

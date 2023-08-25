@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 class SongSerialzier(serializers.ModelSerializer):
     class Meta:
         model = Song
-        fields = ["id","song_name", "artist", "album", "genre"]
+        fields = ["id", "spotify_song_id", "song_name", "artist", "album", "genre", "image_cover", "uri"]
 
 
 #--------- PLAYLIST_SONG_SERIALIZER
