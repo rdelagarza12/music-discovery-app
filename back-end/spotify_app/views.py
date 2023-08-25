@@ -26,7 +26,7 @@ class SpotifyCallbackView(View):
 
         client_id = os.environ.get('CLIENT_ID')
         client_secret = os.environ.get('CLIENT_SECRET')
-        redirect_uri = 'http://localhost:5173/signin/profile/'  # Use the correct redirect URI
+        redirect_uri = 'http://localhost:5173/signin/profile/' 
 
         auth_header = base64.b64encode(f'{client_id}:{client_secret}'.encode('utf-8')).decode('utf-8')
         token_url = 'https://accounts.spotify.com/api/token'
@@ -44,12 +44,10 @@ class SpotifyCallbackView(View):
         token_data = response.json()
 
         if 'access_token' in token_data:
-            # Handle token data and store it securely
             access_token = token_data['access_token']
-            refresh_token = token_data.get('refresh_token')  # Only if refresh token is provided
+            refresh_token = token_data.get('refresh_token') 
             expires_in = token_data.get('expires_in')
 
-            # Store the access_token and refresh_token in the user's profile
             user = request.user
             user.spotify_token = {"access_token": access_token, "expires_in": expires_in, "refresh_token": refresh_token}
 
