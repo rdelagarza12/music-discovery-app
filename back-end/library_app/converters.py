@@ -1,6 +1,6 @@
 class IntOrStringConverter:
-    regex = '\w+'
-
+    regex = '[\w\-]+?'
+    
     def to_python(self, value):
         if (value).isdigit():
             return int(value)

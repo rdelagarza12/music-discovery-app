@@ -27,7 +27,7 @@ class Single_Playlist(User_permissions):
                 return single_playlist
                 
             else:
-                segments = " ".join(playlist.strip("/").split("/")[-1].split("_")).lower()
+                segments = " ".join(playlist.strip("/").split("/")[-1].split("-")).lower()
                 try:
                     single_playlist = request.user.library.playlist.get(playlist_name=playlist.lower())
                 except:

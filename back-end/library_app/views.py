@@ -7,7 +7,7 @@ import json
 from django.core.serializers import serialize
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
 from .serializers import LibrarySerializer, PlaylistSerializer, Playlist_SongSerializer
 # Create your views here.
 
@@ -25,7 +25,7 @@ class My_Library(User_permissions):
                 return single_playlist
                 
             else:
-                segments = " ".join(playlist.strip("/").split("/")[-1].split("_"))
+                segments = " ".join(playlist.strip("/").split("/")[-1].split("-"))
                 try:
                     single_playlist = request.user.library.playlist.get(playlist_name=playlist)
                 except:
@@ -43,13 +43,21 @@ class My_Library(User_permissions):
         return Response(serialized_library)
     
     def post(self, request):
-        my_library = Library.objects.get(user=request.user)
-        request.data['library'] = my_library
-        new_playlist, created = Playlist.objects.get_or_create(**request.data)
-        if created:
-            new_playlist.save()
-            return Response(PlaylistSerializer(new_playlist).data, status=HTTP_201_CREATED)
-        return Response(status = HTTP_400_BAD_REQUEST)
+        try:
+            my_library = Library.objects.get(user=request.user)
+            playlist = request.data.get('playlist_name')
+            formatted_playlist = playlist.replace(" ", "-").replace("_", "-")
+            request.data['playlist_name'] = formatted_playlist
+            request.data['library'] = my_library
+            new_playlist, created = Playlist.objects.get_or_create(**request.data)
+            if created:
+                new_playlist.save()
+                return Response(PlaylistSerializer(new_playlist).data, status=HTTP_201_CREATED)
+            else:
+                return Response(status=HTTP_400_BAD_REQUEST)
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=HTTP_500_INTERNAL_SERVER_ERROR)
     
     
     def delete(self, request):

@@ -2,11 +2,12 @@ from django.db import models
 from django.core import validators as v
 from song_app.models import Song
 from library_app.models import Library
+from .validators import validate_playlist_name
 # Create your models here.
 
 
 class Playlist(models.Model):
-    playlist_name = models.CharField(max_length=255)
+    playlist_name = models.CharField(max_length=255, validators=[validate_playlist_name])
     max_songs = models.PositiveBigIntegerField(default=100, validators=[v.MaxValueValidator(1000)])
     library = models.ForeignKey(Library, on_delete=models.CASCADE, related_name="playlist", blank=False)
     def __str__(self):

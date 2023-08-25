@@ -38,33 +38,8 @@ class Sign_Up(APIView):
         user_library = Library(user=user)
         user_library.save()
         token = Token.objects.create(user=user)
-        client_id = os.environ.get('CLIENT_ID')
-        client_secret = os.environ.get('CLIENT_SECRET')
-
-        url = 'https://accounts.spotify.com/api/token'
-        data = {
-            'grant_type': 'client_credentials'
-        }
-        headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        auth = (client_id, client_secret)
-
-        response = requests.post(url, data=data, headers=headers, auth=auth)
-
-        if response.status_code == 200:
-            response_json = response.json()
-            request.user.spotify_token = response_json
-        else:
-            print('Error:', response.status_code)
-        return Response({"user" : user.email,
-                "user_token": token.key, 
-                "access_token" : response_json.get('access_token'),
-                "token_type" : response_json.get('token_type'),
-                "expires_in" : response_json.get("expires_in")},
-                status=HTTP_201_CREATED)
-
+        if token:
+            return Response({"email" : user.email, "token" : token.key}, status=HTTP_201_CREATED)
 
 
 class Log_In(APIView):
