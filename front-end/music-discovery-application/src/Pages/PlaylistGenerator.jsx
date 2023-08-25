@@ -1,31 +1,50 @@
 import GenreGenerator from "../components/GenreGenerator"
-import { useContext, useEffect, useState, useSyncExternalStore } from "react"
-import appContext from "./context"
+import {useEffect, useState} from "react"
+import { useAppContext } from "../Pages/context.jsx"
+import GetArtistByGenre from "../components/GetArtistsFromGenre"
+import GetSongsBySpecifics from "../components/GetSongsBySpecifics"
+import GetSongsForPlaylist from "../components/GetSongsForPlaylist"
+import { generatePlaylist } from "../utilities"
+import { useNavigate } from "react-router-dom"
+
 
 export default function PlaylistGenerator () {
-    
-    const {search, setSearch, selectedGenres} = useContext(appContext)
-    let category = "genre"
+    const navigate = useNavigate()
+    const { songs, selectedGenres, library, setUpdatedLibrary, setSelectedGenres, setSelectedArtists, setArtists, setMaxSearch} = useAppContext()
+    const [category, setCategory] = useState("genre")
+    const [page, setPage] = useState(0)
+    const [playlistName, setPlaylistName] = useState("")
+    const [playlistGenerated, setPlaylistGenerated] = useState(false)
 
     useEffect(() => {
-        
-        if (search.length === 0 ) {
-            category = "genre"
+        if (page === 0) {
+            setCategory(0)
+        } else if (page === 1) {
+            setCategory(1)
+        } else if (page === 2) {
+            setCategory(2)
+        } else if (page === 3) {
+            setCategory(3)
         }
-        else if (search.length === 1) {
-            category = "album"
-        }
-    }, [search])
+    }, [page])
 
-    useEffect(() => {
-        console.log(selectedGenres)
-    }, [selectedGenres])
-
-    return (
+    return ( <>{playlistGenerated ? <div><h1>Generating your playlist... Be patient</h1></div> : 
         <div className="playlist">
-            <h2>PLAYLIST GENERATOR</h2>
-            {category === "genre" ? <GenreGenerator /> : <h1>hello</h1> }
-            <button onSubmit={(e) => setSearch([...search, selectedGenres])}></button>
-        </div>
+            <div className="page">
+            <h4>PLAYLIST GENERATOR</h4>  
+                {page === 0 ? <GenreGenerator /> : page === 1 ? <GetArtistByGenre /> : page === 2? <GetSongsBySpecifics /> : <GetSongsForPlaylist />}
+            </div>
+            <div className="nav-buttons">
+                <button style={{width: "9vw", height: "5vh", marginTop: "2vh"}} onClick={(e) => setPage(page - 1)}className="btn btn-primary">
+                    PREVIOUS
+                </button>
+                {page < 3 ? <button style={{width: "9vw", height: "5vh", marginTop: "2vh"}} onClick={(e) => setPage(page + 1)}className="btn btn-primary">
+                    NEXT 
+                </button> :
+                <><button style={{width: "12vw", height: "5vh", marginTop: "2vh"}} onClick={(e) => generatePlaylist(playlistName, selectedGenres, songs, library, setUpdatedLibrary, setPlaylistGenerated, navigate, setSelectedGenres, setSelectedArtists, setArtists, setMaxSearch)} className="btn btn-primary">SAVE PLAYLIST</button><input onChange={(e) => setPlaylistName(e.target.value)} placeholder="playlist name"/></>}
+            </div>
+        </div>                
+                }</>
+
     )
 }

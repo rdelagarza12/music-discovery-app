@@ -1,13 +1,13 @@
-import React, { useEffect, useContext} from "react"
-import { api } from "../utilities.jsx"
+import React from "react"
 import { useNavigate } from "react-router-dom"
-import appContext from "../Pages/context.jsx";
+import { useAppContext } from "../Pages/context.jsx";
+import { api, generateRandomString, CLIENT_ID, REDIRECT_URI, getCurrentTime} from "../utilities.jsx"
 
 
 
 export default function SignUp() {
     const navigate = useNavigate();
-    const {user, setUser, userName, setUserName, password, setPassword} = useContext(appContext)
+    const {loggedIn, setLoggedIn, userName, setUserName, password, setPassword, user, setUser, currentTime, tokenExpirationTime, setTokenExpirationTime} = useAppContext()
 
     const registerUser = async (e) => {
         e.preventDefault();
@@ -15,15 +15,26 @@ export default function SignUp() {
             email: userName,
             password: password
         })
-        let my_user = response.data.user;
-        let token = response.data.user_token;
-        let spotify_access_token = response.data.spotify_token
-        localStorage.setItem("token", token);
-        localStorage.setItem("Bearer", spotify_access_token)
-        api.defaults.headers.common['Authorization'] = `Token ${token}`;
-        setUser(my_user)
         setLoggedIn(!loggedIn)
-        navigate("profile")
+        let token = response.data.token;
+        localStorage.setItem("token", token);
+        const current_time = getCurrentTime()
+        const expiration_time = new Date(current_time.setHours(current_time.getHours() + 1))
+        setTokenExpirationTime(expiration_time)
+        localStorage.setItem("token expiration time", expiration_time)
+        const state = generateRandomString(16);
+        const scope = 'user-read-private user-read-email user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming user-read-playback-position user-top-read user-read-recently-played';
+
+        const queryParams = new URLSearchParams({
+            response_type: 'code',
+            client_id : CLIENT_ID,
+            scope : scope,
+            redirect_uri : REDIRECT_URI,
+            state : state,
+          });
+        const authorizationUrl = `https://accounts.spotify.com/authorize?${queryParams}`;
+        window.location.href = authorizationUrl;
+        navigate('/signin/profile')
     }
 
     return (
