@@ -6,6 +6,8 @@ import SignIn from "./components/SignIn.jsx"
 import Profile from "./Pages/Profile.jsx"
 import PlaylistGenerator from "./Pages/PlaylistGenerator.jsx"
 import ProfileMain from "./components/ProfileMain.jsx"
+import SinglePlaylist from "./components/SinglePlaylist.jsx"
+import MusicPlayer from "./Pages/MusicPlayer.jsx"
 
 const router = createBrowserRouter([
     {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
                     {
                         path: "playlist-generator",
                         element: <PlaylistGenerator />
+                    },
+                    {
+                        path: "single-playlist",
+                        element: <SinglePlaylist />
+                    },
+                    {
+                        path:"musicplayer",
+                        element: <MusicPlayer />
                     }
                 ]
             }

@@ -1,11 +1,12 @@
-import { useContext, useEffect} from "react";
-import appContext from "../Pages/context";
+import { useEffect} from "react";
+import {useAppContext} from "../Pages/context";
 import { getLibrary } from "../utilities";
-import ProfileMain from "./ProfileMain";
+
+import Library  from "./Library.jsx"
 
 export default function ProfileHeader () {
 
-    const {library, setLibrary} = useContext(appContext)
+    const {setLibrary, updatedLibrary} = useAppContext()
         
     
         useEffect(() => {
@@ -16,18 +17,12 @@ export default function ProfileHeader () {
                 .catch(error => {
                     console.error("Error fetching library:", error);
                 });
-        }, []);    
+        }, [updatedLibrary]);    
+
 
     return (
         <div className="profile">
-            <div className="library">
-                <h5>Library</h5>
-                <div className="playlistList">
-                    {library.map((list, index) => (
-                    <li key={index} className="listItem">{list.playlist_name}</li>
-                    ))}   
-                </div>
-            </div>
+            <Library />
         </div>
     )
 }

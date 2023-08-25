@@ -1,17 +1,28 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect } from "react";
 import { getGenre } from "../utilities";
-import appContext from "../Pages/context";
+import {useAppContext} from "../Pages/context";
 
 
 export default function GenreGenerator() {
-    const { allGenres, setAllGenres, search, setSearch } = useContext(appContext);
-    const [selectedGenres, setSelectedGenres] = useState([]);
-
+    const { allGenres, setAllGenres, searchGenre, setSearchGenre, selectedGenres, setSelectedGenres, maxSearch, setMaxSearch} = useAppContext()
+    
+        // handles clicking of genres 
     const handleGenreClick = (genre) => {
-        if (selectedGenres.includes(genre)) {
+        if (selectedGenres.includes(genre) && (maxSearch > 0 && maxSearch <= 2)) {
+            // this updates useState of selectedgenres to remove them
             setSelectedGenres(selectedGenres.filter(selectedGenre => selectedGenre !== genre));
+            setSearchGenre(searchGenre.filter(search_item => search_item !== genre))
+            setMaxSearch(maxSearch - 1)   
+            
         } else {
-            setSelectedGenres([...selectedGenres, genre]);
+            if (maxSearch < 2) {
+                setMaxSearch(maxSearch + 1)
+                setSelectedGenres([...selectedGenres, genre]);
+                setSearchGenre([...searchGenre, genre])   
+            }
+            
+
+            
         }
     };
 
@@ -25,10 +36,13 @@ export default function GenreGenerator() {
             });
     }, [setAllGenres]);
 
+    useEffect(() => {
+        console.log(selectedGenres)
+    }, [selectedGenres])
+
     return (
-        <div>
             <form>
-                <h2 style={{ textAlign: "center" }}>Select A Genre</h2>
+                <h4 style={{ textAlign: "center" }}>Select Two Genres {maxSearch}/5</h4>
                 <div className="all-genres">
                     {allGenres.map((genre, index) => (
                         <div
@@ -36,11 +50,10 @@ export default function GenreGenerator() {
                             key={index}
                             onClick={() => handleGenreClick(genre)}
                         >
-                            {genre}
+                            {genre.toUpperCase()}
                         </div>
                     ))}
                 </div>
             </form>
-        </div>
     );
 }
