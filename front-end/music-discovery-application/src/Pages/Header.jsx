@@ -93,20 +93,3 @@ export default function Header () {
 
 
 
-
-
-    // const CLIENT_ID = '149f6f2b228f48b48db6a18ee5c0c42a'
-    // const REDIRECT_URI = "http://localhost:5173/"
-    // const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-    // const RESPONSE_TYPE = "token"
-
-    // useEffect(() => {
-    //     const hash = window.location.hash 
-    //     let token = window.localStorage.getItem("token")
-    //     if (!token && hash) {
-    //         token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-    //         window.location.hash = ""
-    //         window.localStorage.setItem("token", token)
-    //         setToken(token)
-    //     }
-    // }, []) 
