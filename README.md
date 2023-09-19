@@ -52,12 +52,40 @@ Homescreen:
 
 Sign In / Sign Up:
 
-  The Sign in and Sign Up pages look almost identical but behind the scenes is where the magic is happening. If the User is signing up for the first time i am taking in the input from the user and making a call to my backend to create my user / his profile / and his authentication token. He is then taken to the Spotify login website to authenticate through them as well receiving an access token and refresh token. If the User is returning and is attempting to sign in. The input is taken and is cross referenced with my backend to make sure the user exists and a token is assigned to the user. 
+The Sign-In and Sign-Up pages may appear quite similar in their visual design, but it's the underlying functionality that sets them apart. Here's how they differ:
+
+Sign-Up:
+When a user is signing up for the first time, the application collects their input data. This data is then sent to the backend, where a series of important actions take place:
+
+User Creation: The backend creates a new user account and generates a user profile based on the provided input.
+
+Authentication Token: An authentication token is generated for the newly created user. This token is crucial for securing and verifying the user's identity during their interactions with the application.
+
+Spotify Authentication: The user is redirected to the Spotify login website, where they authenticate themselves. As a result, the user receives an access token and a refresh token from Spotify.
+
+This multi-step process ensures that a new user's account is set up correctly and securely.
+
+Sign-In:
+For returning users attempting to sign in, a slightly different process occurs:
+
+User Verification: The input data provided by the user during the sign-in attempt is cross-referenced with the backend to confirm the user's existence and validity.
+
+Token Assignment: Upon successful verification, the user is assigned a token. This token is used to authenticate the user for their current session.
+
+In summary, while the Sign-In and Sign-Up pages may look alike, they each perform distinct operations behind the scenes to either establish new user accounts or verify the identities of returning users, all while ensuring the security and integrity of the authentication process.
 
 ![signin](https://github.com/rdelagarza12/music-discovery-app/assets/119212006/5d77eeb7-cb68-457c-9f0f-15e0c39d5aa8)
 
-Profile:
-  Once the user has been authenticated he is then redirected to his personal Profile where he is presented with his library holding his existing playlists or the option to create a new playlist: From here he has the ability to create, delete, and view his music
+User Profile:
+After successful authentication, the user is seamlessly redirected to their personalized profile, where they gain access to a robust set of CRUD (Create, Read, Update, Delete) capabilities handled by the backend. Within their profile, users can:
+
+View Existing Playlists: Users can effortlessly explore their library, which contains all their existing playlists, making it easy to access their favorite music collections.
+
+Create New Playlists: The application empowers users to create entirely new playlists, providing them with a dynamic and customizable music experience.
+
+Delete Playlists: If users wish to declutter their library or no longer need a playlist, they have the option to delete playlists, ensuring their library remains organized and tailored to their preferences.
+
+These comprehensive CRUD capabilities offer users complete control over their music library, allowing them to curate, manage, and enjoy their music in a way that best suits their tastes and preferences.
 
 ![profile](https://github.com/rdelagarza12/music-discovery-app/assets/119212006/19a61543-adc8-400c-ab8c-333ff36ba382)
 
