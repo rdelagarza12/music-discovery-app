@@ -1,38 +1,40 @@
 # Music-Discovery-Application
 Code Platoon personal project | Full Stack Application
 
+
+
 Project Title: Lucid Streaming
 
 Project Description:
 
 Lucid Streaming is a music discovery application designed to enhance your musical journey. The application offers an innovative way to curate playlists based on user input. Here's how it works:
 
-Genre Selection: Users start by selecting two genres from a list. These genres serve as the foundation for playlist generation.
+  Genre Selection: Users start by selecting two genres from a list. These genres serve as the foundation for playlist generation.
+  Artist Selection: The application then generates artists who share similarities with the chosen genres. Users can pick three artists to refine their music search.
+  Music Customization: Users are prompted to specify their preferences for music based on factors such as danceability, speechiness, popularity, instrumental content, beats per minute, and more.
+  Lucid Streaming broadens your musical horizons by introducing you to a diverse range of music, tailored to your mood and preferences. It's an ideal platform for discovering new artists and expanding your musical palette.
 
-Artist Selection: The application then generates artists who share similarities with the chosen genres. Users can pick three artists to refine their music search.
 
-Music Customization: Users are prompted to specify their preferences for music based on factors such as danceability, speechiness, popularity, instrumental content, beats per minute, and more.
 
-Lucid Streaming broadens your musical horizons by introducing you to a diverse range of music, tailored to your mood and preferences. It's an ideal platform for discovering new artists and expanding your musical palette.
 
 Tech Stack:
 
 Lucid Streaming leverages a robust tech stack for its development:
 
-Backend: Django Rest Framework
-Database: PostgreSQL for storing user data and authentication
-Frontend: React.js with a touch of Bootstrap for CSS
-Languages: Python for backend and JavaScript for frontend
-API Integration: Utilizes the Spotify API to source music data
-API Operations: Implements CRUD operations for its API functionality
+  Backend: Django Rest Framework
+  Database: PostgreSQL for storing user data and authentication
+  Frontend: React.js with a touch of Bootstrap for CSS
+  Languages: Python for backend and JavaScript for frontend
+  API Integration: Utilizes the Spotify API to source music data
+  API Operations: Implements CRUD operations for its API functionality
 
 Challenges:
 
 While building Lucid Streaming, several challenges were encountered, including:
 
-Spotify Authentication: Integrating Spotify authentication proved to be a significant challenge. Initially, i attempted to handle all authentication internally, but it was later discovered that Spotify's authentication was necessary. Navigating the intricacies of the Spotify API and choosing the most suitable approach for authentication required time and effort.
+  Spotify Authentication: Integrating Spotify authentication proved to be a significant challenge. Initially, i attempted to handle all authentication internally, but it was later discovered that Spotify's authentication was necessary. Navigating the intricacies of the Spotify API and choosing the most suitable approach for authentication required time and effort.
 
-Complexity of Spotify API: The Spotify API presented complexities that were not immediately straightforward. Multiple solutions existed for addressing the same problem, necessitating careful consideration to determine the most effective approach.
+  Complexity of Spotify API: The Spotify API presented complexities that were not immediately straightforward. Multiple solutions existed for addressing the same problem, necessitating careful consideration to determine the most effective approach.
 
 Walkthrough of the Application:
 
