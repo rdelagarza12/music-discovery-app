@@ -28,7 +28,7 @@ export default function PlaylistGenerator () {
         }
     }, [page])
 
-    return ( <>{playlistGenerated ? <div><h1>Generating your playlist... Be patient</h1></div> : 
+    return ( <>{playlistGenerated ? <div className="generatePlaylist"><h1>Generating your playlist... Be patient</h1></div> : 
         <div className="playlist">
             <div className="page">
             <h4>PLAYLIST GENERATOR</h4>  

@@ -36,11 +36,38 @@ export const AppProvider = ({children}) => {
     const isMounted = useRef(false)
 
     return (
-        <appContext.Provider value={{isTokenAvailable, setIsTokenAvailable, playlistName, setPlaylistName, currentTime, setCurrentTime, token, setToken, tokenExpirationTime, setTokenExpirationTime, loggedIn, setLoggedIn,
-            userName, setUserName, password, setPassword, library, setLibrary, allGenres, setAllGenres, updatedLibrary, setUpdatedLibrary, playlistDelete, setPlaylistDelete
-            ,searchGenre, setSearchGenre, selectedGenres, setSelectedGenres, artists, setArtists, artistsNames, setArtistsNames, selectedArtists, setSelectedArtists, isMounted, songs,
-            setSongs, acoustic, setAcoustic, instrumental, setInstrumental, speechiness, setSpeechiness, danceability, setDanceability, tempo, setTempo, duration, setDuration,
-            energy, setEnergy, popularity, setPopularity, maxSearch, setMaxSearch, selectedPlaylist, setSelectedPlaylist, currentSong, setCurrentSong, selectedPlaylistSongs, setSelectedPlaylistSongs}}>
+        <appContext.Provider value={{isTokenAvailable, setIsTokenAvailable, 
+                                    playlistName, setPlaylistName, 
+                                    currentTime, setCurrentTime, 
+                                    token, setToken, 
+                                    tokenExpirationTime, setTokenExpirationTime, 
+                                    loggedIn, setLoggedIn,
+                                    userName, setUserName, 
+                                    password, setPassword, 
+                                    library, setLibrary, 
+                                    allGenres, setAllGenres, 
+                                    updatedLibrary, setUpdatedLibrary, 
+                                    playlistDelete, setPlaylistDelete, 
+                                    searchGenre, setSearchGenre, 
+                                    selectedGenres, setSelectedGenres, 
+                                    artists, setArtists, 
+                                    artistsNames, setArtistsNames, 
+                                    selectedArtists, setSelectedArtists, 
+                                    isMounted, 
+                                    songs, setSongs, 
+                                    acoustic, setAcoustic, 
+                                    instrumental, setInstrumental, 
+                                    speechiness, setSpeechiness, 
+                                    danceability, setDanceability, 
+                                    tempo, setTempo, 
+                                    duration, setDuration, 
+                                    energy, setEnergy, 
+                                    popularity, setPopularity, 
+                                    maxSearch, setMaxSearch, 
+                                    selectedPlaylist, setSelectedPlaylist, 
+                                    currentSong, setCurrentSong, 
+                                    selectedPlaylistSongs, 
+                                    setSelectedPlaylistSongs}}>
             {children}
         </appContext.Provider>
     )

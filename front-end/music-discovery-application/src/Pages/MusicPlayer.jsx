@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Player from "../components/Player.jsx";
 import { useAppContext } from "./context.jsx";
-import { useState } from "react";
 
 export default function MusicPlayer() {
 
